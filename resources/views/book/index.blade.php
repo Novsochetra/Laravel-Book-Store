@@ -3,9 +3,26 @@
 
 @section('content')
 <div class="container">
-  <div class="row justify-content-center">
+  @if (Session::has('msg'))
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="alert alert-success" role="alert">
+        {{ Session::get('msg') }}
+      </div>
+    </div>
+  </div>
+  @endif
+
+
+  <div class="row">
     <div class="col-sm-12">
       {{ $books->links() }}
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-sm-12">
+
 
       <table class="table table-hover table-bordered table-responsive">
         <thead>

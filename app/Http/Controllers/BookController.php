@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use App\Http\Requests\BookStoreRequest;
 
 class BookController extends Controller
 {
@@ -12,11 +13,10 @@ class BookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $books = Book::orderBy('id', 'desc')->paginate(10);
         return view('book.index')->with('books', Book::orderBy('id', 'desc')->paginate(5));
-        // return view('book.index', ["books" => $books]);
     }
 
     /**
@@ -26,7 +26,7 @@ class BookController extends Controller
      */
     public function create()
     {
-        //
+        return view('book.create');
     }
 
     /**
@@ -35,9 +35,18 @@ class BookController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BookStoreRequest $request)
     {
-        //
+        if($request->has('file_url')) {
+            $file_name = time().".".$request->file_url->extension();
+            $request->merge(["cover_url" => $file_name]);
+        }
+
+        $result = Book::create($request->all());
+
+        if($result->exists) {
+            return redirect()->route('book.list')->with('msg', 'Book created successfully');
+        }
     }
 
     /**

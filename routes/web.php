@@ -21,6 +21,8 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function() {
     Route::get('book', [App\Http\Controllers\BookController::class, 'index'])->name('book.list');
+    Route::get('book/create', [App\Http\Controllers\BookController::class, 'create'])->name('book.create');
+    Route::post('book/store', [App\Http\Controllers\BookController::class, 'store'])->name('book.store');
 });
 
 Auth::routes();
